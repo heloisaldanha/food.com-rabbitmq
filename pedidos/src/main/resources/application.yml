@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: order-ms
+  datasource:
+    url: jdbc:postgresql://localhost:5434/pedidos
+    username: postgres
+    password: 12345678
+  jpa:
+    hibernate:
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: update
+  flyway:
+    baselineOnMigrate: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8081/eureka
+  instance:
+    instanceId: ${spring.application.name}:${random.int}
+
+server:
+  port: 0

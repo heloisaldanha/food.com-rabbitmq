@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: payments-ms
+  datasource:
+    url: jdbc:postgresql://localhost:5432/food
+    username: postgres
+    password: 123456
+  jpa:
+    hibernate:
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: update
+  flyway:
+    baselineOnMigrate: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8081/eureka
+
+server:
+  port: 0
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      atualizaPedido:
+        slidingWindowSize: 3  // quantas requisições eu vou considerar
+        minimunNumberOfCalls: 2  // o mínimo de chamadas que tenho que fazer até o circuit breaker não fazer mais requisição
+        waitDurationInOpenState: 50s  // quanto tempo vai manter o estado aberto
