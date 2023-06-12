@@ -5,6 +5,8 @@ import com.food.payments.service.PaymentService
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
+import org.springframework.amqp.core.Message
+import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -23,7 +25,8 @@ import org.springframework.web.util.UriComponentsBuilder
 @RestController
 @RequestMapping("/pagamentos")
 class PaymentController(
-    private val service: PaymentService
+    private val service: PaymentService,
+    private val rabbitTemplate: RabbitTemplate
 ) {
 
     @GetMapping
@@ -43,6 +46,9 @@ class PaymentController(
     ): ResponseEntity<PaymentDto> {
         val payment = service.create(paymentDto)
         val uri = uriBuilder.path("/pagamentos/{id}").build().toUri()
+
+        val message = Message(("Criando pagamento com o id: ${payment.id}").toByteArray())
+        rabbitTemplate.send("pagamento.concluido", message)
         
         return ResponseEntity.created(uri).body(payment)
     }
