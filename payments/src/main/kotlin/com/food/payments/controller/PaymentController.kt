@@ -47,8 +47,7 @@ class PaymentController(
         val payment = service.create(paymentDto)
         val uri = uriBuilder.path("/pagamentos/{id}").build().toUri()
 
-        val message = Message(("Criando pagamento com o id: ${payment.id}").toByteArray())
-        rabbitTemplate.send("pagamento.concluido", message)
+        rabbitTemplate.convertAndSend("pagamento.concluido", payment)
         
         return ResponseEntity.created(uri).body(payment)
     }
