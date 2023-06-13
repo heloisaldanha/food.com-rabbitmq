@@ -9,12 +9,12 @@ import java.math.BigDecimal;
 @Setter
 public class PagamentoDto {
     private Long id;
-    private BigDecimal valor;
-    private String nome;
-    private String numero;
-    private String expiracao;
-    private String codigo;
+    private BigDecimal value;
+    private String name;
+    private String number;
+    private String expirationAt;
+    private String securityCode;
     private StatusPagamento status;
-    private Long formaDePagamentoId;
-    private Long pedidoId;
+    private Long idOrder;
+    private Long paymentType;
 }

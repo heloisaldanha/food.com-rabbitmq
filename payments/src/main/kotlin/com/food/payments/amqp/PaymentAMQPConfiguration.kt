@@ -1,6 +1,7 @@
 package com.food.payments.amqp
 
 
+import org.springframework.amqp.core.FanoutExchange
 import org.springframework.amqp.core.Queue
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.rabbit.core.RabbitAdmin
@@ -15,10 +16,10 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class PaymentAMQPConfiguration {
 
-    @Bean
-    fun queueCreate(): Queue {
-        return Queue("pagamento.concluido", false)
-    }
+//    @Bean  --- não precisa mais criar a fila, já que vai criar as exchanges
+//    fun queueCreate(): Queue {
+//        return Queue("pagamento.concluido", false)
+//    }
 
     @Bean
     fun createRabbitAdmin(connection: ConnectionFactory): RabbitAdmin {
@@ -43,4 +44,9 @@ class PaymentAMQPConfiguration {
 //        return rabbitTemplate
 //
 //    }
+
+    @Bean
+    fun fanoutExchange(): FanoutExchange {
+        return FanoutExchange("pagamento.ex")
+    }
 }
